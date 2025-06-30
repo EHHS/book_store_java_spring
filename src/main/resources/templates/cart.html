@@ -1,0 +1,17 @@
+<h2>Your Cart</h2>
+<table>
+  <tr>
+    <th>Title</th><th>Price</th><th>Quantity</th><th>Total</th><th>Action</th>
+  </tr>
+  <tr th:each="item : ${cartItems}">
+    <td th:text="${item.book.title}"></td>
+    <td th:text="${item.book.price}"></td>
+    <td th:text="${item.quantity}"></td>
+    <td th:text="${item.totalPrice}"></td>
+    <td>
+      <form th:action="@{/cart/remove/{id}(id=${item.id})}" method="post">
+        <button type="submit">Remove</button>
+      </form>
+    </td>
+  </tr>
+</table>
