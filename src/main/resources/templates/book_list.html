@@ -40,12 +40,13 @@
 
 <div class="book-grid">
     <div class="book-card" th:each="book : ${books}">
-        <img src="/images/book-placeholder.png" alt="Book Cover" />
         <h5 th:text="${book.title}"></h5>
         <p th:text="${book.author}"></p>
         <p><strong th:text="'$' + ${book.price}"></strong></p>
-        <form th:action="@{/cart/add}" method="post">
-            <input type="hidden" name="bookId" th:value="${book.id}" />
+        <form th:action="@{/cart/add/{id}(id=${book.id})}" method="post" class="d-grid gap-2">
+            <label>
+                <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" />
+            </label>
             <button type="submit" class="btn btn-primary">Add to Cart</button>
         </form>
     </div>

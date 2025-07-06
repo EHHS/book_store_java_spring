@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -28,18 +29,28 @@ public class CartController {
     }
 
     @PostMapping("/add/{bookId}")
-    public String addToCart(@PathVariable Long bookId, @AuthenticationPrincipal User user) {
+    public String addToCart(@PathVariable Long bookId,
+                            @RequestParam(defaultValue = "1") int quantity,
+                            @AuthenticationPrincipal User user) {
         Book book = bookRepo.findById(bookId).orElseThrow();
-        cartService.addToCart(book, getCustomer(user));
+        cartService.addToCart(book, getCustomer(user), quantity);
         return "redirect:/books";
     }
 
     @GetMapping
     public String viewCart(@AuthenticationPrincipal User user, Model model) {
         List<CartItem> items = cartService.getCartItems(getCustomer(user));
+
+        BigDecimal total = items.stream()
+                .map(CartItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         model.addAttribute("cartItems", items);
+        model.addAttribute("total", total);
+
         return "cart";
     }
+
 
     @PostMapping("/remove/{id}")
     public String removeItem(@PathVariable Long id) {

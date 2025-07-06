@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,5 +21,12 @@ public class BookController {
         List<Book> books = bookRepo.findAll();
         model.addAttribute("books", books);
         return "book_list";
+    }
+
+    @GetMapping("/books/search")
+    public String searchBooks(@RequestParam("keyword") String keyword, Model model) {
+        List<Book> books = bookRepo.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(keyword, keyword);
+        model.addAttribute("books", books);
+        return "book_list"; // reuse same view
     }
 }

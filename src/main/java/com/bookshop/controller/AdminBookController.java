@@ -35,7 +35,7 @@ public class AdminBookController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("book", bookRepo.findById(id).orElseThrow());
-        return "create_book"; // reuse form
+        return "create_book";
     }
 
     @GetMapping("/delete/{id}")
