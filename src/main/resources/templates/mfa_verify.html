@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verify MFA</title>
+</head>
+<body>
+<h2>Two-Factor Verification</h2>
+<form th:action="@{/mfa/verify}" method="post">
+    <label>Enter 6-digit code:</label>
+    <input type="number" name="code" required />
+    <button type="submit">Verify</button>
+    <div th:if="${error}" style="color:red" th:text="${error}"></div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+</form>
+</body>
+</html>
+
+

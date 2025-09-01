@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MFA Setup</title>
+</head>
+<body>
+<h2>Set up Two-Factor Authentication</h2>
+<p>Scan this URL in Google Authenticator or another TOTP app:</p>
+<pre th:text="${otpAuthUrl}"></pre>
+<p>Secret (if needed): <strong th:text="${secret}"></strong></p>
+
+<form th:action="@{/mfa/enable}" method="post">
+    <label>Enter 6-digit code:</label>
+    <input type="number" name="code" required />
+    <button type="submit">Enable</button>
+    <div th:if="${error}" style="color:red" th:text="${error}"></div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    </form>
+</body>
+</html>
+
+
