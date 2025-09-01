@@ -20,23 +20,27 @@
     <h3 class="text-center mb-4">Checkout</h3>
     <p class="text-center">Total Amount: <strong th:text="${total}"></strong></p>
 
-    <form th:action="@{/order/place}" method="post">
+    <form th:action="@{/order/place}" th:object="${payment}" method="post">
         <div class="mb-3">
             <label for="cardName" class="form-label">Cardholder Name</label>
-            <input type="text" class="form-control" id="cardName" name="cardName" required />
+            <input type="text" class="form-control" id="cardName" th:field="*{cardName}" required />
+            <div class="text-danger" th:if="${#fields.hasErrors('cardName')}" th:errors="*{cardName}"></div>
         </div>
         <div class="mb-3">
             <label for="cardNumber" class="form-label">Card Number</label>
-            <input type="text" class="form-control" id="cardNumber" name="cardNumber" required />
+            <input type="text" class="form-control" id="cardNumber" th:field="*{cardNumber}" required />
+            <div class="text-danger" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></div>
         </div>
         <div class="row mb-3">
             <div class="col">
                 <label for="expiryDate" class="form-label">Expiry Date</label>
-                <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/YY" required />
+                <input type="text" class="form-control" id="expiryDate" th:field="*{expiryDate}" placeholder="MM/YY" required />
+                <div class="text-danger" th:if="${#fields.hasErrors('expiryDate')}" th:errors="*{expiryDate}"></div>
             </div>
             <div class="col">
                 <label for="cvv" class="form-label">CVV</label>
-                <input type="text" class="form-control" id="cvv" name="cvv" required />
+                <input type="text" class="form-control" id="cvv" th:field="*{cvv}" required />
+                <div class="text-danger" th:if="${#fields.hasErrors('cvv')}" th:errors="*{cvv}"></div>
             </div>
         </div>
         <div class="d-grid">

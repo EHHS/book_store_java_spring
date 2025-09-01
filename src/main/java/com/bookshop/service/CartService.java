@@ -5,7 +5,6 @@ import com.bookshop.model.Cart;
 import com.bookshop.model.CartItem;
 import com.bookshop.model.Customer;
 import com.bookshop.repository.CartItemRepository;
-import com.bookshop.repository.BookRepository;
 import com.bookshop.repository.CartRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,15 @@ public class CartService {
     }
 
     public void removeItem(Long itemId) {
-        cartItemRepo.deleteById(itemId);
+        CartItem item = cartItemRepo.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Cart item not found"));
+
+        if (item.getQuantity() > 1) {
+            item.setQuantity(item.getQuantity() - 1);
+            cartItemRepo.save(item);
+        } else {
+            cartItemRepo.delete(item);
+        }
     }
 
     @Transactional

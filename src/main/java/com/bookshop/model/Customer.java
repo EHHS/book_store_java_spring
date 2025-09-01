@@ -1,12 +1,22 @@
 package com.bookshop.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 
 @Entity
 public class Customer extends User {
+    @NotBlank
+    @Size(max = 50)
     private String name;
+
+    @NotBlank
+    @Size(max = 50)
     private String surname;
 
     public LocalDate getDateOfBirth() {
@@ -57,8 +67,37 @@ public class Customer extends User {
         this.name = name;
     }
 
+    @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
+
+    @NotBlank
+    @Size(max = 200)
     private String address;
+
+    @NotBlank
+    @Pattern(regexp = "^[0-9]{7,15}$", message = "Phone must be digits, 7-15 long")
     private String phoneNumber;
+
+    @NotBlank
+    @Email
     private String email;
+
+    private Boolean mfaEnabled = false;
+    private String mfaSecret;
+
+    public Boolean getMfaEnabled() {
+        return mfaEnabled;
+    }
+
+    public void setMfaEnabled(Boolean mfaEnabled) {
+        this.mfaEnabled = mfaEnabled;
+    }
+
+    public String getMfaSecret() {
+        return mfaSecret;
+    }
+
+    public void setMfaSecret(String mfaSecret) {
+        this.mfaSecret = mfaSecret;
+    }
 }
